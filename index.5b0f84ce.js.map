@@ -1,0 +1,1 @@
+{"mappings":"AAGAA,QAAQC,IAAI","sources":["src/index.js"],"sourcesContent":["import { fetchImages } from \"./js/fetchImages\";\n\n\nconsole.log('ok');"],"names":["console","log"],"version":3,"file":"index.5b0f84ce.js.map"}
