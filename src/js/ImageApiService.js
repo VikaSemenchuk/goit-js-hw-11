@@ -51,7 +51,7 @@ export default class ImagesApiService {
     //     return hits;
     //   });
 const response = await axios.get(URL)
-
+this.nextPage();
     return response.data.hits;
   }
 
