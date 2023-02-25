@@ -44,10 +44,10 @@ function fetchImages() {
   return imagesApiService
     .getImages()
     .then(hits => {
-      if (hits.length === 0)
-        throw new Error(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
+      if (hits.length === 0) {
+        Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.")
+        loadMoreBtn.isHidden()
+      }
       console.log(hits);
 
       return hits.reduce((markup, hit) => createMarkup(hit) + markup, '');

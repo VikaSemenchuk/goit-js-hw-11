@@ -23,7 +23,7 @@ export default class ImagesApiService {
     this.searchQuary = '';
   }
 
-  getImages(searchQuary) {
+ async getImages(searchQuary) {
     // const apiParameters = {
     //     parameters: {
     //         key: ImageApiService.API_KEY,
@@ -38,18 +38,21 @@ export default class ImagesApiService {
 
     const URL = `${ENDPOINT}?key=${API_KEY}&q=${this.searchQuary}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`;
 
-    return fetch(URL)
-      .then(response => {
-        if (!response.ok) {
-          Notiflix.Notify.failure(`Oops, error ${response.status}`);
-        }
+    // return fetch(URL)
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       Notiflix.Notify.failure(`Oops, error ${response.status}`);
+    //     }
 
-        return response.json();
-      })
-      .then(({ hits }) => {
-        this.nextPage();
-        return hits;
-      });
+    //     return response.json();
+    //   })
+    //   .then(({ hits }) => {
+    //     this.nextPage();
+    //     return hits;
+    //   });
+const response = await axios.get(URL)
+
+    return response.data.hits;
   }
 
   nextPage() {
