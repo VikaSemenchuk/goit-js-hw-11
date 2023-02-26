@@ -54,6 +54,10 @@ img {
     -webkit-user-select: none;
     vertical-align: middle;
     white-space: nowrap;
+
+    &:disabled {
+      background-color: darkgray;
+    }
     // width: 100%;
   }
   
