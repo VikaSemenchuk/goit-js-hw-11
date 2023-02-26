@@ -22,7 +22,7 @@ let gallery = new SimpleLightbox('.gallery__link');
 formEl.addEventListener('submit', onSubmit);
 loadMoreBtn.button.addEventListener('click', fetchImages);
 
-function onSubmit(e) {
+async function onSubmit(e) {
   e.preventDefault();
 
   const form = e.currentTarget;
@@ -38,13 +38,71 @@ function onSubmit(e) {
     loadMoreBtn.hide();
     return;
   }
-  fetchImages().finally(() => form.reset());
-  console.log(value);
+//   fetchImages().finally(() => form.reset());
+//   console.log(value);
+clearGallery();
+imagesApiService.resetPage();
 
-  clearGallery();
-  imagesApiService.resetPage();
 
-  loadMoreBtn.show();
+try {
+    const { hits, totalHits } = await imagesApiService.getImages();
+
+
+
+    totalImages += hits.length;
+    if (totalHits >= 1) {
+      Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+    }
+    console.log(totalHits);
+    if (totalHits === 0) {
+      Notiflix.Notify.warning(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+      loadMoreBtn.hide();
+      return;
+    }
+
+    if (totalImages >= totalHits) {
+
+        setTimeout(() => {
+            Notiflix.Notify.warning(
+                "We're sorry, but you've reached the end of search results."
+              );
+              console.log(imagesApiService.perPage);
+              loadMoreBtn.hide();
+        }, 3000);
+      
+    }
+
+    const markup = await hits.reduce(
+      (markup, hit) => createMarkup(hit) + markup,
+      ''
+    );
+    createGallery(markup);
+    // const { height: cardHeight } =
+    //   galleryEl.firstElementChild.getBoundingClientRect();
+
+    // window.scrollBy({
+    //   top: cardHeight * 2,
+    //   behavior: 'smooth',
+    // });
+    // loadMoreBtn.enable();
+    // return totalHits;
+  loadMoreBtn.enable();
+
+
+// clearGallery();
+// imagesApiService.resetPage();
+
+loadMoreBtn.show();
+  } catch (response) {
+    // onError(response)
+    Notiflix.Notify.failure(`Oops, error: ${response}`);
+    loadMoreBtn.hide();
+
+  }
+
+
 }
 
 async function fetchImages() {
@@ -58,13 +116,13 @@ async function fetchImages() {
     //   Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
     // }
     // console.log(totalHits);
-    if (totalHits === 0) {
-      Notiflix.Notify.warning(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
-      loadMoreBtn.hide();
-      return;
-    }
+    // if (totalHits === 0) {
+    //   Notiflix.Notify.warning(
+    //     'Sorry, there are no images matching your search query. Please try again.'
+    //   );
+    //   loadMoreBtn.hide();
+    //   return;
+    // }
 
     if (totalImages >= totalHits) {
       Notiflix.Notify.warning(
