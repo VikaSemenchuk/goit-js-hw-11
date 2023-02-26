@@ -28,8 +28,6 @@ async function onSubmit(e) {
   const form = e.currentTarget;
   const value = form.elements.searchQuery.value.trim();
   //   form.elements[1].disabled = false
-  
-  
 
   imagesApiService.searchQuary = value;
 
@@ -47,35 +45,32 @@ async function onSubmit(e) {
 
   try {
     const { hits, totalHits } = await imagesApiService.getImages();
-
+    totalImages = 0;
     totalImages += hits.length;
+
     if (totalHits >= 1) {
       Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-    // loadMoreBtn.enable();
-
+      // loadMoreBtn.enable();
     }
     if (totalHits === 0) {
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
       );
-    //   loadMoreBtn.hide();
+      //   loadMoreBtn.hide();
       return;
     }
     if (totalHits > 40) {
-        loadMoreBtn.enable();
-    loadMoreBtn.show();
-
-        }
+      loadMoreBtn.enable();
+      loadMoreBtn.show();
+    }
     if (totalImages >= totalHits) {
-        console.log(totalImages);
+      console.log(totalImages);
       setTimeout(() => {
         Notiflix.Notify.warning(
           "We're sorry, but you've reached the end of search results."
         );
-        console.log(imagesApiService.perPage);
       }, 2000);
       loadMoreBtn.hide();
-
     }
 
     const markup = await hits.reduce(
@@ -83,7 +78,6 @@ async function onSubmit(e) {
       ''
     );
     createGallery(markup);
-
   } catch (response) {
     // onError(response)
     Notiflix.Notify.failure(`Oops, error: ${response}`);
