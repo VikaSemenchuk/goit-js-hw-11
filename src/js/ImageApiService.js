@@ -1,14 +1,3 @@
-// export function fetchImages(quary) {
-//     const ENDPOINT = `https://pixabay.com/api/`;
-
-//     return fetch (`${ENDPOINT}?key=33731840-f6299e204f5104584f5709ced&q=${quary}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`)
-//     .then(response => {
-//         if (!response.ok) throw new Error(response.status)
-
-//         return response.json();
-//     })
-//     // .then(({ hits }) => console.log(hits))
-// }
 'use strict';
 import Notiflix from 'notiflix';
 
@@ -23,36 +12,16 @@ export default class ImagesApiService {
     this.searchQuary = '';
   }
 
- async getImages(searchQuary) {
-    // const apiParameters = {
-    //     parameters: {
-    //         key: ImageApiService.API_KEY,
-    //         q: this.searchQuary,
-    //         image_type: 'photo',
-    //         orientation: 'horizontal',
-    //         safesearch: true,
-    //         per_page: 40,
-    //         page: this.page
-    //     }
-    // }
-
+  async getImages(searchQuary) {
     const URL = `${ENDPOINT}?key=${API_KEY}&q=${this.searchQuary}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`;
 
-    // return fetch(URL)
-    //   .then(response => {
-    //     if (!response.ok) {
+    const response = await axios.get(URL);
+    this.nextPage();
+    // if (!response.ok) {
     //       Notiflix.Notify.failure(`Oops, error ${response.status}`);
     //     }
-
-    //     return response.json();
-    //   })
-    //   .then(({ hits }) => {
-    //     this.nextPage();
-    //     return hits;
-    //   });
-const response = await axios.get(URL)
-this.nextPage();
-    return response.data.hits;
+    console.log(response.data);
+    return response.data;
   }
 
   nextPage() {
@@ -63,3 +32,31 @@ this.nextPage();
     this.page = 1;
   }
 }
+
+
+
+
+// const apiParameters = {
+//     parameters: {
+//         key: ImageApiService.API_KEY,
+//         q: this.searchQuary,
+//         image_type: 'photo',
+//         orientation: 'horizontal',
+//         safesearch: true,
+//         per_page: 40,
+//         page: this.page
+//     }
+// }
+
+// return fetch(URL)
+//   .then(response => {
+//     if (!response.ok) {
+//   Notiflix.Notify.failure(`Oops, error ${response.status}`);
+//     }
+
+//     return response.json();
+//   })
+//   .then(({ hits }) => {
+//     this.nextPage();
+//     return hits;
+//   });
