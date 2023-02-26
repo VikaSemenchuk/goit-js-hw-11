@@ -98,6 +98,7 @@ async function onLoadMore() {
     const { hits, totalHits } = await imagesApiService.getImages();
 
     totalImages += hits.length;
+    console.log(totalImages);
 
     if (totalImages >= totalHits) {
       Notiflix.Notify.warning(

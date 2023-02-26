@@ -87,7 +87,8 @@ img {
   }
   
   button:disabled {
-    cursor: auto;
+    cursor: none;
+    background-color: rgb(189, 211, 242);
   }
 
 
